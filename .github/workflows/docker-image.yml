@@ -1,0 +1,33 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      name: Build the Docker image
+      env:
+        # 指定自己的仓库地址
+        docker_repo: zzzkl
+        # 指定镜像名称
+        image_name: kaniko-excutor
+        # 指定镜像标签
+        tag: v1.6-debug-$(date +%s)
+      with:
+        ref: v1.6
+    - run: |
+        docker version
+        docker build . --file ./deploy/Dockerfile_debug --tag $docker_repo/$image_name:$tag
+        docker login --username=${{ secrets.DOCKER_USERNAME }} --password=${{ secrets.DOCKER_PASSWORD }}
+        docker push $docker_repo/$image_name:$tag
+
+        
