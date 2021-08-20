@@ -21,9 +21,9 @@ jobs:
         # 指定镜像名称
         image_name: kaniko-excutor
         # 指定镜像标签
-        tag: v1.6-debug-$(date +%s)
+        tag: v1.6.0-debug-$(date +%s)
       with:
-        ref: v1.6
+        ref: v1.6.0
     - run: |
         docker version
         docker build . --file ./deploy/Dockerfile_debug --tag $docker_repo/$image_name:$tag
