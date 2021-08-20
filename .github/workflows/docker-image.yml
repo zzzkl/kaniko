@@ -26,8 +26,8 @@ jobs:
         ref: v1.6.0
     - run: |
         docker version
-        docker build . --file ./deploy/Dockerfile_debug --tag $docker_repo/$image_name:$tag
+        docker build . --file ./deploy/Dockerfile_debug --tag zzzkl/kaniko-excutor:v1.6.0-debug-$(date +%s)
         docker login --username=${{ secrets.DOCKER_USERNAME }} --password=${{ secrets.DOCKER_PASSWORD }}
-        docker push $docker_repo/$image_name:$tag
+        docker push zzzkl/kaniko-excutor:v1.6.0-debug-$(date +%s)
 
         
