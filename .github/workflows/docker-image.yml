@@ -26,8 +26,18 @@ jobs:
         ref: v1.6.0
     - run: |
         docker version
-        docker build . --file ./deploy/Dockerfile_debug --tag zzzkl/kaniko-excutor:v1.6.0-debug-$(date +%s)
-        docker login --username=${{ secrets.DOCKER_USERNAME }} --password=${{ secrets.DOCKER_PASSWORD }}
-        docker push zzzkl/kaniko-excutor:v1.6.0-debug-$(date +%s)
+    #docker build . --file ./deploy/Dockerfile_debug --tag zzzkl/kaniko-excutor:v1.6.0-debug-$(date +%s)
+    #docker login --username=${{ secrets.DOCKER_USERNAME }} --password=${{ secrets.DOCKER_PASSWORD }}
+    #docker push zzzkl/kaniko-excutor:v1.6.0-debug-$(date +%s)
+
+    - name: Build and push Docker images
+      # You may pin to the exact commit or the version.
+      # uses: docker/build-push-action@1bc1040caef9e604eb543693ba89b5bf4fc80935
+      uses: docker/build-push-action@v2.6.1
+      with:
+        # List of tags
+        tags: zzzkl/kaniko-excutor:v1.6.0-debug-$(date +%s)
+        file: ./deploy/Dockerfile_debug
+        push: true
 
         
