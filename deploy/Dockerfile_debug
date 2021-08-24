@@ -59,7 +59,7 @@ RUN \
   apt install -y ca-certificates && \
   cat /etc/ssl/certs/* > /ca-certificates.crt
 
-FROM scratch
+FROM debian:10
 COPY --from=0 /go/src/github.com/GoogleContainerTools/kaniko/out/* /kaniko/
 COPY --from=0 /go/src/github.com/GoogleContainerTools/kaniko/out/warmer /kaniko/warmer
 COPY --from=0 /usr/local/bin/docker-credential-gcr /kaniko/docker-credential-gcr
@@ -69,6 +69,8 @@ COPY --from=busybox:1.32.0 /bin /busybox
 
 # Declare /busybox as a volume to get it automatically in the path to ignore
 VOLUME /busybox
+
+RUN apt-get update && apt-get install -y --no-install-recommends curl && rm -rf /var/lib/apt/lists/*
 
 COPY --from=certs /ca-certificates.crt /kaniko/ssl/certs/
 COPY --from=0 /kaniko/.docker /kaniko/.docker
